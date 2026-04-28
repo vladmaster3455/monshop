@@ -1,0 +1,7 @@
+{
+  "buildCommand": "prisma generate && next build && npx prisma migrate deploy",
+  "env": {
+    "NODE_ENV": "production"
+  },
+  "installCommand": "npm install --legacy-peer-deps"
+}
