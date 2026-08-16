@@ -5,22 +5,30 @@ import bcrypt from "bcryptjs";
 
 export async function POST(req: NextRequest) {
   try {
-    // Security: simple token check (change this in production)
     const token = req.headers.get("x-seed-token");
-    if (token !== process.env.SEED_TOKEN) {
+    const configuredToken = process.env.SEED_TOKEN;
+    if (!configuredToken || token !== configuredToken) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
     console.log("🌱 Starting database seed...");
 
-    // Admin user
-    const adminPassword = await bcrypt.hash("passer", 12);
+    const adminEmail = process.env.SEED_ADMIN_EMAIL;
+    const adminPasswordValue = process.env.SEED_ADMIN_PASSWORD;
+    if (!adminEmail || !adminPasswordValue) {
+      return NextResponse.json(
+        { error: "SEED_ADMIN_EMAIL and SEED_ADMIN_PASSWORD must be configured" },
+        { status: 500 },
+      );
+    }
+
+    const adminPassword = await bcrypt.hash(adminPasswordValue, 12);
     await prisma.user.upsert({
-      where: { email: "sergesenghor@gmail.com" },
+      where: { email: adminEmail },
       update: {},
       create: {
         name: "Admin",
-        email: "sergesenghor@gmail.com",
+        email: adminEmail,
         password: adminPassword,
         role: "ADMIN",
       },

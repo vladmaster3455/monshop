@@ -52,15 +52,11 @@ Ouvrir: http://localhost:3000
 
 ---
 
-##  Comptes de test
+##  Compte administrateur local
 
-### Admin
-- Email: `admin@monshop.sn`
-- Mot de passe: `admin123!`
+Le seeding crée le compte administrateur avec `SEED_ADMIN_EMAIL` et `SEED_ADMIN_PASSWORD`. Définir ces variables dans `.env` ou `.env.local` avant de lancer `npm run db:seed` ; aucun mot de passe n'est conservé dans le dépôt.
 
-### Ou créer avec Google OAuth
-- N'importe quel compte Google fonctionne
-- **Inscription = Connexion automatique** 
+Pour les essais, Google OAuth peut aussi être activé avec les variables correspondantes. Ne pas utiliser de compte ou de secret de développement en production.
 
 ---
 
@@ -196,4 +192,3 @@ prisma/
 - [Dexpay API](https://dexpay.africa/docs)
 
 ---
-

@@ -57,14 +57,14 @@ fetch('https://votre-domaine.vercel.app/api/admin/seed', {
 1. Aller à **Vercel Dashboard** → **Settings** → **Environment Variables**
 2. Ajouter une nouvelle variable:
    - Nom: `SEED_TOKEN`
-   - Valeur: `votre-token-securise` (ex: `seed_prod_xyz123abc`)
+   - Valeur: un token aléatoire d'au moins 32 caractères
    - Appliquer à: Production
 
 #### 3️⃣ **Déclencher le seeding**
 ```bash
 # Après déploiement successful
 curl -X POST https://votre-domaine/api/admin/seed \
-  -H "x-seed-token: seed_prod_xyz123abc"
+  -H "x-seed-token: $SEED_TOKEN"
 ```
 
 ---
@@ -80,7 +80,7 @@ curl -X POST https://votre-domaine/api/admin/seed \
 ### Exemple de token secure:
 ```
 seed_prod_$(openssl rand -hex 16)
-# Résultat: seed_prod_a8f3e2c1b5d9f6e4a1c3b8d2e5f9a6c1
+# Conserver la valeur uniquement dans Vercel, jamais dans Git
 ```
 
 ---
@@ -151,12 +151,16 @@ Content-Type: application/json
 Ajouter à votre `.env.local` (développement):
 ```env
 # Optionnel - utilisé uniquement si vous appelez l'endpoint localement
-SEED_TOKEN=dev_token_local_123
+SEED_TOKEN=replace-with-a-local-token
+SEED_ADMIN_EMAIL=admin@example.com
+SEED_ADMIN_PASSWORD=replace-with-a-local-password
 ```
 
 Et à **Vercel Dashboard**:
 ```
-SEED_TOKEN=seed_prod_a8f3e2c1b5d9f6e4a1c3b8d2e5f9a6c1
+SEED_TOKEN=replace-with-a-random-32-character-secret
+SEED_ADMIN_EMAIL=admin@example.com
+SEED_ADMIN_PASSWORD=replace-with-a-strong-password
 DATABASE_URL=postgresql://...
 ```
 

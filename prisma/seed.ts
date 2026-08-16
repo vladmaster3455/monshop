@@ -5,14 +5,19 @@ import bcrypt from "bcryptjs";
 const prisma = new PrismaClient();
 
 async function main() {
-  // Admin user
-  const adminPassword = await bcrypt.hash("passer", 12);
+  const adminEmail = process.env.SEED_ADMIN_EMAIL;
+  const adminPasswordValue = process.env.SEED_ADMIN_PASSWORD;
+  if (!adminEmail || !adminPasswordValue) {
+    throw new Error("SEED_ADMIN_EMAIL and SEED_ADMIN_PASSWORD must be configured");
+  }
+
+  const adminPassword = await bcrypt.hash(adminPasswordValue, 12);
   await prisma.user.upsert({
-    where: { email: "sergesenghor@gmail.com" },
+    where: { email: adminEmail },
     update: {},
     create: {
       name: "Admin",
-      email: "sergesenghor@gmail.com",
+      email: adminEmail,
       password: adminPassword,
       role: "ADMIN",
     },
